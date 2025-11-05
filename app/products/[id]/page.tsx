@@ -24,7 +24,7 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { getProductById } from "@/actions/products";
 import { Button } from "@/components/ui/button";
-import { ProductSelector } from "@/components/product-selector";
+import { ProductDetailActions } from "@/components/product-detail-actions";
 
 interface ProductDetailPageProps {
   params: Promise<{ id: string }>;
@@ -155,10 +155,11 @@ async function ProductDetailContent({ id }: ProductDetailContentProps) {
                 </div>
               )}
 
-              {/* 옵션 선택 (색상/수량) */}
-              <div className="mb-6">
-                <ProductSelector stockQuantity={product.stock_quantity} />
-              </div>
+              {/* 옵션 선택 및 장바구니 추가 버튼 */}
+              <ProductDetailActions
+                productId={product.id}
+                stockQuantity={product.stock_quantity}
+              />
 
               {/* 6. 등록일 */}
               <div className="text-sm text-gray-500 dark:text-gray-400 space-y-1">
@@ -171,19 +172,6 @@ async function ProductDetailContent({ id }: ProductDetailContentProps) {
                   </p>
                 )}
               </div>
-            </div>
-
-            {/* 장바구니 추가 버튼 (추후 구현) */}
-            <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
-              <Button
-                size="lg"
-                className="w-full"
-                disabled={product.stock_quantity === 0}
-              >
-                {product.stock_quantity === 0
-                  ? "품절"
-                  : "장바구니에 추가"}
-              </Button>
             </div>
           </div>
         </div>

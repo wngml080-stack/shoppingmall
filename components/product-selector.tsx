@@ -36,12 +36,14 @@ import { AVAILABLE_COLORS } from "@/types/product-selector";
 interface ProductSelectorProps {
   /** 재고 수량 (수량 선택의 최대값) */
   stockQuantity: number;
+  /** 선택한 항목 목록 변경 시 콜백 */
+  onItemsChange?: (items: SelectedItem[]) => void;
 }
 
 /**
  * 상품 색상 및 수량 선택 컴포넌트
  */
-export function ProductSelector({ stockQuantity }: ProductSelectorProps) {
+export function ProductSelector({ stockQuantity, onItemsChange }: ProductSelectorProps) {
   const [selectedColor, setSelectedColor] = useState<string>("");
   const [selectedQuantity, setSelectedQuantity] = useState<number>(1);
   const [selectedItems, setSelectedItems] = useState<SelectedItem[]>([]);
@@ -69,7 +71,11 @@ export function ProductSelector({ stockQuantity }: ProductSelectorProps) {
       quantity: selectedQuantity,
     };
 
-    setSelectedItems([...selectedItems, newItem]);
+    const updatedItems = [...selectedItems, newItem];
+    setSelectedItems(updatedItems);
+    
+    // 부모 컴포넌트에 변경 알림
+    onItemsChange?.(updatedItems);
 
     // 입력 필드 초기화
     setSelectedColor("");
@@ -80,7 +86,11 @@ export function ProductSelector({ stockQuantity }: ProductSelectorProps) {
    * 선택한 항목 삭제
    */
   const handleRemoveItem = (index: number) => {
-    setSelectedItems(selectedItems.filter((_, i) => i !== index));
+    const updatedItems = selectedItems.filter((_, i) => i !== index);
+    setSelectedItems(updatedItems);
+    
+    // 부모 컴포넌트에 변경 알림
+    onItemsChange?.(updatedItems);
   };
 
   return (
