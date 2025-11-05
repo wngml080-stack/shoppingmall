@@ -50,7 +50,14 @@ interface SuccessContentProps {
 
 async function SuccessContent({ orderId, clerkId }: SuccessContentProps) {
   try {
+    console.group("주문 완료 페이지 - 주문 조회");
+    console.log("주문 ID:", orderId);
+    console.log("Clerk ID:", clerkId);
+
     const order = await getOrderById(orderId, clerkId);
+
+    console.log("조회된 주문:", order ? "성공" : "실패");
+    console.groupEnd();
 
     if (!order) {
       return (
@@ -60,13 +67,18 @@ async function SuccessContent({ orderId, clerkId }: SuccessContentProps) {
               주문을 찾을 수 없습니다
             </h3>
             <p className="text-sm text-red-700 dark:text-red-300 mb-4">
-              주문 정보를 불러올 수 없습니다.
+              주문 정보를 불러올 수 없습니다. 주문 번호를 확인해주세요.
             </p>
-            <Link href="/cart">
-              <Button variant="outline" size="sm">
-                장바구니로 돌아가기
-              </Button>
-            </Link>
+            <div className="flex gap-3 justify-center">
+              <Link href="/cart">
+                <Button variant="outline" size="sm">
+                  장바구니로 돌아가기
+                </Button>
+              </Link>
+              <Link href="/products">
+                <Button size="sm">상품 목록으로</Button>
+              </Link>
+            </div>
           </div>
         </div>
       );

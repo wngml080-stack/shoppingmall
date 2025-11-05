@@ -22,6 +22,7 @@ import type {
   ShippingAddress,
 } from "@/types/order";
 import type { CartItemWithProduct } from "@/types/cart";
+import type { Product } from "@/types/product";
 
 /**
  * 주문 생성
@@ -199,6 +200,7 @@ export async function getOrderById(
     }
 
     // 2. 주문 아이템 조회 (상품 정보 포함)
+    // LEFT JOIN을 사용하여 상품이 삭제되어도 주문 아이템은 조회 가능
     const { data: orderItems, error: orderItemsError } = await supabase
       .from("order_items")
       .select(
@@ -212,20 +214,40 @@ export async function getOrderById(
 
     if (orderItemsError) {
       console.error("주문 아이템 조회 오류:", orderItemsError);
-      throw new Error(`주문 아이템 조회 실패: ${orderItemsError.message}`);
+      // 에러가 발생해도 주문 정보는 반환 (아이템은 빈 배열)
+      console.warn("주문 아이템 조회 실패, 빈 배열로 반환");
+      return {
+        ...(order as Order),
+        order_items: [],
+      };
     }
 
-    // 타입 변환
-    const orderItemsWithProducts: OrderItemWithProduct[] = (orderItems || []).map((item: any) => ({
-      id: item.id,
-      order_id: item.order_id,
-      product_id: item.product_id,
-      product_name: item.product_name,
-      quantity: item.quantity,
-      price: item.price,
-      created_at: item.created_at,
-      product: item.product,
-    }));
+    // 타입 변환 (상품 정보가 없어도 기본 정보는 표시)
+    const orderItemsWithProducts: OrderItemWithProduct[] = (orderItems || []).map((item: any) => {
+      // 상품 정보가 없을 경우 기본값 생성
+      const product = item.product || {
+        id: item.product_id,
+        name: item.product_name,
+        description: null,
+        price: item.price,
+        category: null,
+        stock_quantity: 0,
+        is_active: false,
+        created_at: item.created_at,
+        updated_at: item.created_at,
+      };
+
+      return {
+        id: item.id,
+        order_id: item.order_id,
+        product_id: item.product_id,
+        product_name: item.product_name,
+        quantity: item.quantity,
+        price: item.price,
+        created_at: item.created_at,
+        product: product as Product,
+      };
+    });
 
     return {
       ...(order as Order),
