@@ -72,6 +72,11 @@ git push -u origin main
    NEXT_PUBLIC_STORAGE_BUCKET=uploads
    ```
 
+   #### Unsplash 환경 변수 (선택사항 - 이미지 기능 사용 시)
+   ```
+   NEXT_PUBLIC_UNSPLASH_ACCESS_KEY=your_unsplash_access_key
+   ```
+
    **주의사항:**
    - 각 환경 변수는 "Production", "Preview", "Development" 모두에 추가
    - 또는 "Add" 버튼 옆의 드롭다운에서 "All Environments" 선택
@@ -160,7 +165,7 @@ Vercel Dashboard → Settings → Environment Variables에서 모든 환경 변�
 
 **해결**:
 - `next.config.ts`에 외부 이미지 도메인 추가
-- 이미 추가되어 있음 (placehold.co)
+- 이미 추가되어 있음 (placehold.co, images.unsplash.com, plus.unsplash.com)
 
 ---
 

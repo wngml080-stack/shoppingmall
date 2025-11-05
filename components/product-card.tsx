@@ -29,7 +29,16 @@ export function ProductCard({ product }: ProductCardProps) {
     >
       {/* 상품 이미지 영역 */}
       <div className="relative w-full aspect-square bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 overflow-hidden">
-        {product.category ? (
+        {product.image_url ? (
+          <Image
+            src={product.image_url}
+            alt={product.name}
+            fill
+            className="object-cover group-hover:scale-105 transition-transform duration-300"
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            unoptimized
+          />
+        ) : product.category ? (
           <Image
             src={`https://placehold.co/400x400/3b82f6/ffffff?text=${encodeURIComponent(product.category)}`}
             alt={product.name}

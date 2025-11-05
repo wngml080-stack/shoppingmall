@@ -90,7 +90,16 @@ async function ProductDetailContent({ id }: ProductDetailContentProps) {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-6 md:p-8">
           {/* 상품 이미지 영역 */}
           <div className="relative w-full aspect-square bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 rounded-lg overflow-hidden">
-            {product.category ? (
+            {product.image_url ? (
+              <Image
+                src={product.image_url}
+                alt={product.name}
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 50vw"
+                unoptimized
+              />
+            ) : product.category ? (
               <Image
                 src={`https://placehold.co/800x800/3b82f6/ffffff?text=${encodeURIComponent(product.category)}`}
                 alt={product.name}
