@@ -25,7 +25,7 @@
   - [ ] Toss Payments 테스트 키 설정
 - [x] TypeScript 타입 정의
   - [x] `types/product.ts` - 상품 타입
-  - [ ] `types/cart.ts` - 장바구니 타입
+  - [x] `types/cart.ts` - 장바구니 타입
   - [ ] `types/order.ts` - 주문 타입
 
 ---
@@ -67,7 +67,7 @@
 - [x] 상품 카드 컴포넌트 (`components/product-card.tsx`)
   - [x] 상품 이미지 표시
   - [x] 상품명, 가격, 카테고리 표시
-  - [ ] 장바구니 추가 버튼 (Phase 3에서 구현)
+  - [x] 장바구니 추가 버튼 (상품 상세 페이지에서 구현 완료)
 
 ### 카테고리 필터링
 - [x] 카테고리 필터 컴포넌트 (`components/category-filter.tsx`)
@@ -153,6 +153,17 @@
 - [x] 장바구니 아이콘 및 배지 (`components/cart-icon.tsx`)
   - [x] 헤더에 장바구니 아이콘 추가
   - [x] 장바구니 아이템 개수 표시 (배지)
+- [x] 장바구니 추가 기능 컴포넌트
+  - [x] 장바구니 추가 버튼 (`components/add-to-cart-button.tsx`)
+  - [x] 장바구니 추가 다이얼로그 (`components/add-to-cart-dialog.tsx`)
+  - [x] 상품 선택기 (`components/product-selector.tsx`) - 색상 및 수량 선택
+- [x] 장바구니 유틸리티
+  - [x] 장바구니 총액 계산 함수 (`lib/cart-utils.ts`)
+- [x] 장바구니 클라이언트 컴포넌트
+  - [x] 장바구니 내용 클라이언트 컴포넌트 (`app/cart/cart-content-client.tsx`)
+- [x] 데이터베이스 마이그레이션
+  - [x] `cart_items` 테이블 생성 (color 컬럼 포함)
+  - [x] `update_updated_at_column()` 함수 생성
 
 ### 주문 프로세스
 - [ ] 주문 페이지 (`app/checkout/page.tsx`)
@@ -330,3 +341,12 @@
   - [x] 빈 상태 처리 (404 페이지)
 - [x] 상품 관련 Server Actions 구현 (getProducts, getProductById, getProductsByCategory, getPopularProducts, getProductsWithPagination, getProductsByCategoryWithPagination, getProductsCount, getProductsCountByCategory)
 - [x] TypeScript 상품 타입 정의
+- [x] 장바구니 기능 구현 완료
+  - [x] 장바구니 페이지 구현
+  - [x] 장바구니 아이템 컴포넌트 구현
+  - [x] 장바구니 Server Actions 구현
+  - [x] 장바구니 추가/수정/삭제 기능 구현
+  - [x] 장바구니 아이콘 및 배지 구현
+  - [x] 상품 상세 페이지에서 장바구니 추가 기능 구현
+  - [x] 장바구니 타입 정의 (`types/cart.ts`)
+  - [x] `cart_items` 테이블 생성 및 마이그레이션 완료
