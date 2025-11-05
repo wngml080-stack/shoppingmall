@@ -75,6 +75,11 @@ export function CartItem({ item, onUpdate, onRemove }: CartItemProps) {
     if (result.success) {
       setQuantity(newQuantity);
       onUpdate?.();
+      
+      // CartIcon 배지 업데이트를 위한 이벤트 발생
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(new CustomEvent("cartUpdated"));
+      }
     } else {
       // 에러 발생 시 원래 수량으로 복구
       alert(result.error || "수량 변경에 실패했습니다.");
@@ -97,6 +102,11 @@ export function CartItem({ item, onUpdate, onRemove }: CartItemProps) {
     if (result.success) {
       setQuantity(newQuantity);
       onUpdate?.();
+      
+      // CartIcon 배지 업데이트를 위한 이벤트 발생
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(new CustomEvent("cartUpdated"));
+      }
     } else {
       alert(result.error || "수량 변경에 실패했습니다.");
     }
@@ -120,6 +130,11 @@ export function CartItem({ item, onUpdate, onRemove }: CartItemProps) {
 
     if (result.success) {
       onRemove?.();
+      
+      // CartIcon 배지 업데이트를 위한 이벤트 발생
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(new CustomEvent("cartUpdated"));
+      }
     } else {
       alert(result.error || "삭제에 실패했습니다.");
       setIsRemoving(false);

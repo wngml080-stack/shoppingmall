@@ -89,6 +89,11 @@ export function AddToCartButton({
         setAddedItems(itemsToAdd);
         setTotalItems(result.addedCount);
         setDialogOpen(true);
+        
+        // CartIcon 배지 업데이트를 위한 이벤트 발생
+        if (typeof window !== "undefined") {
+          window.dispatchEvent(new CustomEvent("cartUpdated"));
+        }
       } else {
         // 에러 처리
         const errorMessage = result.errors

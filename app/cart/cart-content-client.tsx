@@ -38,10 +38,30 @@ export function CartContentClient({
   const [summary, setSummary] = useState(initialSummary);
   const [formattedTotal, setFormattedTotal] = useState(initialTotal);
 
+  // 디버깅: 초기 데이터 확인
+  console.group("장바구니 클라이언트 컴포넌트 초기화");
+  console.log("초기 아이템 개수:", initialItems.length);
+  console.log("초기 아이템:", initialItems);
+  console.log("초기 총액:", initialTotal);
+  console.groupEnd();
+
   // 장바구니 업데이트 시 목록 새로고침
   const handleRefresh = () => {
     router.refresh();
   };
+
+  // 장바구니 추가 후 자동 새로고침 (다른 페이지에서 추가 후 장바구니 페이지로 이동한 경우)
+  useEffect(() => {
+    const handleCartUpdate = () => {
+      handleRefresh();
+    };
+
+    window.addEventListener("cartUpdated", handleCartUpdate);
+    
+    return () => {
+      window.removeEventListener("cartUpdated", handleCartUpdate);
+    };
+  }, [router]);
 
   // 아이템 수정/삭제 후 목록 업데이트
   useEffect(() => {

@@ -11,10 +11,8 @@ const Navbar = () => {
         SaaS Template
       </Link>
       <div className="flex gap-4 items-center">
-        {/* 장바구니 아이콘 (로그인한 사용자만 표시) */}
-        <SignedIn>
-          <CartIcon />
-        </SignedIn>
+        {/* 장바구니 아이콘 (로그인 버튼 왼쪽에 위치) */}
+        <CartIcon />
         <SignedOut>
           <SignInButton mode="modal">
             <Button>로그인</Button>

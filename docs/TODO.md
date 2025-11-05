@@ -92,8 +92,8 @@
       - [x] 등록일 표시 (한국어 날짜 포맷)
       - [x] 수정일 표시 (등록일과 다를 경우만 표시)
     - [x] 장바구니 UI (Phase 3에서 기능 구현)
-      - [ ] 수량 선택 UI (Phase 3에서 구현)
-      - [x] 장바구니 추가 버튼 (UI만 완료, 기능은 Phase 3)
+      - [x] 수량 선택 UI (Phase 3에서 구현)
+      - [x] 장바구니 추가 버튼 (UI 및 기능 완료)
       - [x] 품절 상태 처리 (재고 0일 때 버튼 비활성화)
   - [x] 반응형 디자인 적용
     - [x] 모바일: 세로 레이아웃 (grid-cols-1 적용)
@@ -131,27 +131,28 @@
 ## Phase 3: 장바구니 & 주문 (1주)
 
 ### 장바구니 기능
-- [ ] 장바구니 페이지 (`app/cart/page.tsx`)
-  - [ ] 현재 사용자의 장바구니 조회 (clerk_id로 필터링)
-  - [ ] 장바구니 아이템 목록 표시
-  - [ ] 수량 변경 기능
-  - [ ] 아이템 삭제 기능
-  - [ ] 총 금액 계산 및 표시
-  - [ ] 빈 장바구니 상태 UI
-- [ ] 장바구니 아이템 컴포넌트 (`components/cart-item.tsx`)
-  - [ ] 상품 정보 표시
-  - [ ] 수량 조절 UI (+/- 버튼)
-  - [ ] 삭제 버튼
-  - [ ] 개별 아이템 가격 표시
-- [ ] 장바구니 관련 Server Actions (`actions/cart.ts`)
-  - [ ] `getCartItems(clerkId)` - 장바구니 조회
-  - [ ] `addToCart(clerkId, productId, quantity)` - 장바구니 추가
-  - [ ] `updateCartItem(cartItemId, quantity)` - 수량 변경
-  - [ ] `removeCartItem(cartItemId)` - 아이템 삭제
-  - [ ] `clearCart(clerkId)` - 장바구니 비우기
-- [ ] 장바구니 아이콘 및 배지 (`components/cart-icon.tsx`)
-  - [ ] 헤더에 장바구니 아이콘 추가
-  - [ ] 장바구니 아이템 개수 표시 (배지)
+- [x] 장바구니 페이지 (`app/cart/page.tsx`)
+  - [x] 현재 사용자의 장바구니 조회 (clerk_id로 필터링)
+  - [x] 장바구니 아이템 목록 표시
+  - [x] 수량 변경 기능
+  - [x] 아이템 삭제 기능
+  - [x] 총 금액 계산 및 표시
+  - [x] 빈 장바구니 상태 UI
+- [x] 장바구니 아이템 컴포넌트 (`components/cart-item.tsx`)
+  - [x] 상품 정보 표시
+  - [x] 수량 조절 UI (+/- 버튼)
+  - [x] 삭제 버튼
+  - [x] 개별 아이템 가격 표시
+- [x] 장바구니 관련 Server Actions (`actions/cart.ts`)
+  - [x] `getCartItems(clerkId)` - 장바구니 조회 (상품 정보 포함)
+  - [x] `getCartItemCount(clerkId)` - 장바구니 아이템 개수 조회 (배지용)
+  - [x] `addToCart(clerkId, items)` - 장바구니 추가 (여러 아이템 일괄 처리, 재고 확인, 중복 아이템 수량 합치기)
+  - [x] `updateCartItemQuantity(cartItemId, quantity)` - 수량 변경 (재고 확인 포함)
+  - [x] `removeCartItem(cartItemId)` - 아이템 삭제
+  - [x] `clearCart(clerkId)` - 장바구니 비우기
+- [x] 장바구니 아이콘 및 배지 (`components/cart-icon.tsx`)
+  - [x] 헤더에 장바구니 아이콘 추가
+  - [x] 장바구니 아이템 개수 표시 (배지)
 
 ### 주문 프로세스
 - [ ] 주문 페이지 (`app/checkout/page.tsx`)

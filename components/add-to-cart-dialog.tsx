@@ -59,7 +59,13 @@ export function AddToCartDialog({
    */
   const handleGoToCart = () => {
     onOpenChange(false);
+    // 장바구니 페이지로 이동 후 새로고침을 위해 이벤트 발생
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(new CustomEvent("cartUpdated"));
+    }
     router.push("/cart");
+    // 페이지 이동 후 강제 새로고침
+    router.refresh();
   };
 
   /**

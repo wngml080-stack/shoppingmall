@@ -66,6 +66,12 @@ async function CartContent({ clerkId }: CartContentProps) {
     // 장바구니 아이템 조회
     const cartItems = await getCartItems(clerkId);
 
+    // 디버깅: 장바구니 데이터 확인
+    console.group("장바구니 데이터 확인");
+    console.log("조회된 아이템 개수:", cartItems.length);
+    console.log("아이템 목록:", cartItems);
+    console.groupEnd();
+
     // 빈 장바구니 처리
     if (cartItems.length === 0) {
       return <EmptyCart />;
