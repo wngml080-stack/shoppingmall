@@ -2,6 +2,7 @@ import { SignedOut, SignInButton, SignedIn, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 import React from "react";
 import { Button } from "@/components/ui/button";
+import { CartIcon } from "@/components/cart-icon";
 
 const Navbar = () => {
   return (
@@ -10,6 +11,10 @@ const Navbar = () => {
         SaaS Template
       </Link>
       <div className="flex gap-4 items-center">
+        {/* 장바구니 아이콘 (로그인한 사용자만 표시) */}
+        <SignedIn>
+          <CartIcon />
+        </SignedIn>
         <SignedOut>
           <SignInButton mode="modal">
             <Button>로그인</Button>

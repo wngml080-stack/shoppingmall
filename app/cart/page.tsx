@@ -21,8 +21,8 @@ import { currentUser } from "@clerk/nextjs/server";
 import Link from "next/link";
 import { ShoppingCart } from "lucide-react";
 import { getCartItems, calculateCartSummary } from "@/actions/cart";
-import { CartItem } from "@/components/cart-item";
 import { Button } from "@/components/ui/button";
+import { CartContentClient } from "./cart-content-client";
 
 /**
  * 장바구니 페이지 메인 컴포넌트
@@ -80,41 +80,7 @@ async function CartContent({ clerkId }: CartContentProps) {
     }).format(summary.totalAmount);
 
     return (
-      <div className="space-y-6">
-        {/* 장바구니 아이템 목록 */}
-        <div className="space-y-4">
-          {cartItems.map((item) => (
-            <CartItem key={item.id} item={item} />
-          ))}
-        </div>
-
-        {/* 총액 및 주문하기 버튼 */}
-        <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-            <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
-                총 {summary.totalItems}개 아이템
-              </p>
-              <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-                {formattedTotal}
-              </p>
-            </div>
-
-            <div className="flex gap-3 w-full sm:w-auto">
-              <Link href="/products" className="flex-1 sm:flex-none">
-                <Button variant="outline" className="w-full sm:w-auto">
-                  쇼핑 계속하기
-                </Button>
-              </Link>
-              <Link href="/checkout" className="flex-1 sm:flex-none">
-                <Button size="lg" className="w-full sm:w-auto">
-                  주문하기
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
+      <CartContentClient cartItems={cartItems} formattedTotal={formattedTotal} summary={summary} />
     );
   } catch (error) {
     console.error("장바구니 조회 오류:", error);
@@ -140,6 +106,7 @@ async function CartContent({ clerkId }: CartContentProps) {
     );
   }
 }
+
 
 /**
  * 빈 장바구니 상태 컴포넌트
