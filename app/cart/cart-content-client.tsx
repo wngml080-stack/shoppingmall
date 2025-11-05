@@ -18,7 +18,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { CartItem } from "@/components/cart-item";
 import { Button } from "@/components/ui/button";
-import { calculateCartSummary } from "@/actions/cart";
+import { calculateCartSummary } from "@/lib/cart-utils";
 import type { CartItemWithProduct } from "@/types/cart";
 import type { CartSummary } from "@/types/cart";
 

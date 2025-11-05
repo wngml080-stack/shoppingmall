@@ -314,21 +314,4 @@ export async function clearCart(clerkId: string): Promise<{ success: boolean; er
   }
 }
 
-/**
- * 장바구니 총액 계산
- * @param cartItems - 장바구니 아이템 목록 (상품 정보 포함)
- * @returns 총액 정보
- */
-export function calculateCartSummary(cartItems: CartItemWithProduct[]): CartSummary {
-  const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
-  const totalAmount = cartItems.reduce(
-    (sum, item) => sum + item.product.price * item.quantity,
-    0
-  );
-
-  return {
-    totalItems,
-    totalAmount,
-  };
-}
 

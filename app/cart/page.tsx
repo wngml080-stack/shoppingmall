@@ -20,7 +20,8 @@ import { redirect } from "next/navigation";
 import { currentUser } from "@clerk/nextjs/server";
 import Link from "next/link";
 import { ShoppingCart } from "lucide-react";
-import { getCartItems, calculateCartSummary } from "@/actions/cart";
+import { getCartItems } from "@/actions/cart";
+import { calculateCartSummary } from "@/lib/cart-utils";
 import { Button } from "@/components/ui/button";
 import { CartContentClient } from "./cart-content-client";
 
