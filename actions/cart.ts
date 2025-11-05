@@ -170,7 +170,16 @@ export async function addToCart(
           });
 
           if (insertError) {
-            errors.push(`상품 ID ${item.productId}: 장바구니 추가 실패`);
+            console.error(`장바구니 추가 오류 (productId: ${item.productId}):`, insertError);
+            console.error("추가하려는 데이터:", {
+              clerk_id: clerkId,
+              product_id: item.productId,
+              quantity: item.quantity,
+              color: item.color || null,
+            });
+            errors.push(
+              `상품 ID ${item.productId}: 장바구니 추가 실패 - ${insertError.message || "알 수 없는 오류"}`
+            );
             continue;
           }
 
