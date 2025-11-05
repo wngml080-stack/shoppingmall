@@ -23,8 +23,8 @@
 ### 환경 설정
 - [ ] `.env` 파일 확인 및 필요한 환경 변수 추가
   - [ ] Toss Payments 테스트 키 설정
-- [ ] TypeScript 타입 정의
-  - [ ] `types/product.ts` - 상품 타입
+- [x] TypeScript 타입 정의
+  - [x] `types/product.ts` - 상품 타입
   - [ ] `types/cart.ts` - 장바구니 타입
   - [ ] `types/order.ts` - 주문 타입
 
@@ -33,44 +33,94 @@
 ## Phase 2: 상품 기능 (1주)
 
 ### 홈페이지
-- [ ] `app/page.tsx` 구현
-  - [ ] 상품 목록 표시 (최신 상품 우선 표시)
-  - [ ] 카테고리 기능 (카테고리별 필터링 및 표시)
-  - [ ] 인기 상품 기능 (인기 상품 섹션 표시)
-  - [ ] 반응형 디자인 적용
+- [x] `app/page.tsx` 구현
+  - [x] 상품 목록 표시 (최신 상품 우선 표시)
+  - [x] 카테고리 기능 (카테고리별 필터링 및 표시)
+  - [x] 인기 상품 기능 (인기 상품 섹션 표시)
+  - [x] 반응형 디자인 적용
 
 ### 상품 목록 페이지
-- [ ] `app/products/page.tsx` 구현
-  - [ ] 상품 목록 조회 (Supabase에서 데이터 가져오기)
-  - [ ] 페이지네이션 또는 무한 스크롤
-  - [ ] 로딩 상태 처리
-  - [ ] 에러 핸들링
-- [ ] 상품 카드 컴포넌트 (`components/product-card.tsx`)
-  - [ ] 상품 이미지 표시
-  - [ ] 상품명, 가격, 카테고리 표시
+- [x] `app/products/page.tsx` 구현
+  - [x] 페이지 레이아웃 및 구조
+    - [x] 페이지 제목 ("전체 상품" 또는 "상품 목록")
+    - [x] 카테고리 필터 컴포넌트 통합 (홈페이지와 동일한 `CategoryFilter` 사용)
+    - [x] 상품 목록 Grid 레이아웃 (홈페이지와 동일한 스타일)
+  - [x] 상품 목록 조회 (Supabase에서 데이터 가져오기)
+    - [x] URL 쿼리 파라미터에서 `category` 읽기 (Next.js 15 async searchParams)
+    - [x] `getProductsWithPagination()` 또는 `getProductsByCategoryWithPagination()` 함수 사용
+    - [x] 페이지네이션을 통한 상품 표시 (페이지당 12개)
+  - [x] 페이지네이션 또는 무한 스크롤
+    - [x] 페이지네이션 컴포넌트 구현 (`components/pagination.tsx`)
+    - [x] 페이지 하단에 페이지네이션 배치
+    - [x] 이전/다음 버튼 및 페이지 번호 표시
+    - [x] 총 페이지 수 및 현재 범위 표시
+  - [x] 로딩 상태 처리
+    - [x] Suspense 사용하여 로딩 스켈레톤 표시
+    - [x] 홈페이지와 동일한 스켈레톤 컴포넌트 재사용
+  - [x] 에러 핸들링
+    - [x] try-catch로 에러 처리
+    - [x] 사용자 친화적인 에러 메시지 표시
+    - [x] 홈페이지와 동일한 에러 UI 재사용
+  - [x] 빈 상태 처리
+    - [x] 카테고리 필터링 시 해당 카테고리 상품이 없을 때 메시지 표시
+    - [x] 전체 상품이 없을 때 메시지 표시
+- [x] 상품 카드 컴포넌트 (`components/product-card.tsx`)
+  - [x] 상품 이미지 표시
+  - [x] 상품명, 가격, 카테고리 표시
   - [ ] 장바구니 추가 버튼 (Phase 3에서 구현)
 
 ### 카테고리 필터링
-- [ ] 카테고리 필터 컴포넌트 (`components/category-filter.tsx`)
-  - [ ] 전체 카테고리 목록 표시
-  - [ ] 카테고리별 상품 필터링 기능
-  - [ ] URL 쿼리 파라미터와 동기화
+- [x] 카테고리 필터 컴포넌트 (`components/category-filter.tsx`)
+  - [x] 전체 카테고리 목록 표시
+  - [x] 카테고리별 상품 필터링 기능
+  - [x] URL 쿼리 파라미터와 동기화
 
 ### 상품 상세 페이지
-- [ ] `app/products/[id]/page.tsx` 구현
-  - [ ] 상품 상세 정보 조회
-  - [ ] 상품 이미지 갤러리 (여러 이미지 지원)
-  - [ ] 상품 설명 표시
-  - [ ] 가격, 재고 수량 표시
-  - [ ] 수량 선택 UI
-  - [ ] 장바구니 추가 버튼 (Phase 3에서 구현)
-  - [ ] 404 처리 (상품이 없을 경우)
+- [x] `app/products/[id]/page.tsx` 레이아웃 수정 (2열 구조)
+  - [x] 상품 상세 정보 조회
+  - [x] 404 처리 (상품이 없을 경우)
+  - [x] 2열 레이아웃 구조 구현
+    - [x] 왼쪽 열: 제품 이미지
+      - [x] 상품 이미지 표시
+      - [x] 이미지 비율 및 크기 최적화 (aspect-square 적용)
+    - [x] 오른쪽 열: 상품 정보 (순서대로 배치)
+      - [x] 제품 이름 (큰 제목 스타일)
+      - [x] 가격 (천 단위 콤마 포맷팅)
+      - [x] 재고 표시 (품절/재고있음/남은수량)
+      - [x] 카테고리 태그
+      - [x] 상품 설명 (줄바꿈 지원)
+      - [x] 등록일 표시 (한국어 날짜 포맷)
+      - [x] 수정일 표시 (등록일과 다를 경우만 표시)
+    - [x] 장바구니 UI (Phase 3에서 기능 구현)
+      - [ ] 수량 선택 UI (Phase 3에서 구현)
+      - [x] 장바구니 추가 버튼 (UI만 완료, 기능은 Phase 3)
+      - [x] 품절 상태 처리 (재고 0일 때 버튼 비활성화)
+  - [x] 반응형 디자인 적용
+    - [x] 모바일: 세로 레이아웃 (grid-cols-1 적용)
+    - [x] 데스크톱: 2열 레이아웃 (grid-cols-2 적용)
+  - [x] 로딩 상태 처리
+    - [x] Suspense 사용하여 로딩 스켈레톤 표시
+    - [x] ProductDetailSkeleton 컴포넌트 구현 (2열 레이아웃 구조 반영)
+  - [x] 에러 핸들링
+    - [x] try-catch로 에러 처리
+    - [x] 사용자 친화적인 에러 메시지 표시
+    - [x] 상품 목록 페이지와 동일한 에러 UI 스타일
+  - [x] 빈 상태 처리
+    - [x] 상품이 없을 경우 404 페이지 표시 (notFound() 유지)
+  - [ ] 상품 이미지 갤러리 (추가 개선사항, MVP 이후)
+    - [ ] 여러 이미지 지원
+    - [ ] 이미지 슬라이더/캐러셀
 
 ### 상품 관련 Server Actions
-- [ ] `actions/products.ts` 생성
-  - [ ] `getProducts()` - 상품 목록 조회
-  - [ ] `getProductById(id)` - 상품 상세 조회
-  - [ ] `getProductsByCategory(category)` - 카테고리별 조회
+- [x] `actions/products.ts` 생성
+  - [x] `getProducts()` - 상품 목록 조회
+  - [x] `getProductById(id)` - 상품 상세 조회
+  - [x] `getProductsByCategory(category)` - 카테고리별 조회
+  - [x] `getPopularProducts(limit)` - 인기 상품 조회
+  - [x] `getProductsWithPagination(page, limit)` - 페이지네이션 지원 상품 목록 조회
+  - [x] `getProductsByCategoryWithPagination(category, page, limit)` - 카테고리별 페이지네이션 지원
+  - [x] `getProductsCount()` - 전체 상품 개수 조회
+  - [x] `getProductsCountByCategory(category)` - 카테고리별 상품 개수 조회
 
 ### 어드민 상품 등록
 - [ ] 주의: MVP에서는 Supabase 대시보드에서 직접 등록
@@ -242,8 +292,8 @@
 ## 추가 개선사항 (MVP 이후)
 
 ### UI/UX 개선
-- [ ] 로딩 스켈레톤 추가
-- [ ] 에러 바운더리 구현
+- [x] 로딩 스켈레톤 추가 (상품 목록 페이지, 상품 상세 페이지)
+- [ ] 에러 바운더리 구현 (전역 에러 처리)
 - [ ] 토스트 메시지 (성공/실패 알림)
 - [ ] 다크모드 지원
 
@@ -265,3 +315,17 @@
 - [x] Supabase 데이터베이스 스키마 설계 및 생성
 - [x] 샘플 데이터 20개 삽입
 - [x] RLS 비활성화 설정
+- [x] 홈페이지 상품 목록 표시 기능
+- [x] 카테고리 필터링 기능 구현
+- [x] 인기 상품 섹션 기능 구현
+- [x] 상품 목록 페이지 구현 (페이지네이션 포함)
+- [x] 페이지네이션 컴포넌트 구현
+- [x] 상품 카드 컴포넌트 구현
+- [x] 상품 상세 페이지 구현
+  - [x] 2열 레이아웃 구조 (왼쪽: 이미지, 오른쪽: 상품 정보)
+  - [x] 상품 정보 순서 재배치 (이름 → 가격 → 재고 → 카테고리 → 설명 → 등록일)
+  - [x] 로딩 상태 처리 (Suspense + ProductDetailSkeleton)
+  - [x] 에러 핸들링 (try-catch + 사용자 친화적 에러 UI)
+  - [x] 빈 상태 처리 (404 페이지)
+- [x] 상품 관련 Server Actions 구현 (getProducts, getProductById, getProductsByCategory, getPopularProducts, getProductsWithPagination, getProductsByCategoryWithPagination, getProductsCount, getProductsCountByCategory)
+- [x] TypeScript 상품 타입 정의

@@ -1,35 +1,46 @@
 /**
- * @file app/page.tsx
- * @description 홈페이지 - 상품 목록 Grid 레이아웃
+ * @file app/products/page.tsx
+ * @description 상품 목록 페이지
  *
- * 최신 상품을 Grid 레이아웃으로 표시하는 홈페이지입니다.
+ * 모든 상품을 페이지네이션과 함께 표시하는 페이지입니다.
  * 카테고리 필터링 기능을 지원하며, 반응형 디자인을 지원합니다.
  */
 
 import { Suspense } from "react";
-import { getProducts, getProductsByCategory } from "@/actions/products";
+import { redirect } from "next/navigation";
+import {
+  getProductsWithPagination,
+  getProductsByCategoryWithPagination,
+  getProductsCount,
+  getProductsCountByCategory,
+  type SortOption,
+} from "@/actions/products";
 import { ProductCard } from "@/components/product-card";
 import { CategoryFilter } from "@/components/category-filter";
-import { PopularProductsSection } from "@/components/popular-products-section";
+import { SortFilter } from "@/components/sort-filter";
+import { Pagination } from "@/components/pagination";
 
 interface ProductListProps {
   category: string | null;
+  page: number;
+  limit: number;
+  sortBy: SortOption;
 }
 
 /**
  * 상품 목록 섹션 (Server Component)
  */
-async function ProductList({ category }: ProductListProps) {
+async function ProductList({ category, page, limit, sortBy }: ProductListProps) {
   try {
     const products = category
-      ? await getProductsByCategory(category, 12)
-      : await getProducts(12);
+      ? await getProductsByCategoryWithPagination(category, page, limit, sortBy)
+      : await getProductsWithPagination(page, limit, sortBy);
 
     if (products.length === 0) {
       return (
         <div className="text-center py-16">
           <p className="text-gray-500 dark:text-gray-400 text-lg">
-            등록된 상품이 없습니다.
+            {category ? "해당 카테고리에 등록된 상품이 없습니다." : "등록된 상품이 없습니다."}
           </p>
         </div>
       );
@@ -72,12 +83,51 @@ async function ProductList({ category }: ProductListProps) {
 }
 
 /**
+ * 페이지네이션 정보 섹션 (Server Component)
+ */
+interface PaginationInfoProps {
+  category: string | null;
+  page: number;
+  limit: number;
+}
+
+async function PaginationInfo({ category, page, limit }: PaginationInfoProps) {
+  try {
+    const totalItems = category
+      ? await getProductsCountByCategory(category)
+      : await getProductsCount();
+    
+    const totalPages = Math.ceil(totalItems / limit);
+
+    // 페이지 번호가 유효하지 않으면 1페이지로 리다이렉트
+    if (page < 1 || (totalPages > 0 && page > totalPages)) {
+      const params = new URLSearchParams();
+      if (category) params.set("category", category);
+      params.set("page", "1");
+      redirect(`/products?${params.toString()}`);
+    }
+
+    return (
+      <Pagination
+        currentPage={page}
+        totalPages={totalPages}
+        totalItems={totalItems}
+        itemsPerPage={limit}
+      />
+    );
+  } catch (error) {
+    console.error("페이지네이션 정보 로드 오류:", error);
+    return null;
+  }
+}
+
+/**
  * 로딩 상태 컴포넌트
  */
 function ProductListSkeleton() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {Array.from({ length: 6 }).map((_, index) => (
+      {Array.from({ length: 12 }).map((_, index) => (
         <div
           key={index}
           className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden animate-pulse"
@@ -95,43 +145,44 @@ function ProductListSkeleton() {
 }
 
 /**
- * 홈페이지 메인 컴포넌트
+ * 상품 목록 페이지 메인 컴포넌트
  */
-interface HomeProps {
-  searchParams: Promise<{ category?: string }>;
+interface ProductsPageProps {
+  searchParams: Promise<{ category?: string; page?: string; sort?: string }>;
 }
 
-export default async function Home({ searchParams }: HomeProps) {
+export default async function ProductsPage({ searchParams }: ProductsPageProps) {
   const params = await searchParams;
   const category = params.category || null;
+  const page = Math.max(1, parseInt(params.page || "1", 10));
+  const limit = 12;
+  const sortBy = (params.sort as SortOption) || "latest";
 
   return (
     <main className="min-h-[calc(100vh-80px)] px-4 py-8 md:px-8 md:py-12 lg:py-16">
       <div className="max-w-7xl mx-auto">
-        {/* 헤더 섹션 */}
-        <section className="mb-12 text-center">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 text-gray-900 dark:text-gray-100">
-            쇼핑몰에 오신 것을 환영합니다
+        {/* 페이지 헤더 */}
+        <section className="mb-8">
+          <h1 className="text-3xl font-bold mb-8 text-gray-900 dark:text-gray-100">
+            상품 목록
           </h1>
-          <p className="text-lg md:text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-            최신 상품을 확인하고 마음에 드는 상품을 찾아보세요
-          </p>
+          <CategoryFilter />
+          <SortFilter />
         </section>
-
-        {/* 인기 상품 섹션 */}
-        <PopularProductsSection />
 
         {/* 상품 목록 섹션 */}
         <section>
-          <h1 className="text-3xl font-bold mb-8 text-gray-900 dark:text-gray-100">
-            전체 상품
-          </h1>
-          <CategoryFilter />
           <Suspense fallback={<ProductListSkeleton />}>
-            <ProductList category={category} />
+            <ProductList category={category} page={page} limit={limit} sortBy={sortBy} />
           </Suspense>
         </section>
+
+        {/* 페이지네이션 섹션 */}
+        <Suspense fallback={null}>
+          <PaginationInfo category={category} page={page} limit={limit} />
+        </Suspense>
       </div>
     </main>
   );
 }
+
