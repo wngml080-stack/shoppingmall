@@ -26,6 +26,10 @@ import { getProductById } from "@/actions/products";
 import { Button } from "@/components/ui/button";
 import { ProductDetailActions } from "@/components/product-detail-actions";
 
+// 배포 환경에서 동적 라우트가 제대로 작동하도록 설정
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 interface ProductDetailPageProps {
   params: Promise<{ id: string }>;
 }
@@ -71,11 +75,24 @@ interface ProductDetailContentProps {
 
 async function ProductDetailContent({ id }: ProductDetailContentProps) {
   try {
+    // 디버깅: 상품 ID 로그
+    console.log("[ProductDetail] 상품 ID:", id);
+    console.log("[ProductDetail] 상품 ID 타입:", typeof id);
+    console.log("[ProductDetail] 상품 ID 길이:", id?.length);
+
     // 상품 정보 조회
     const product = await getProductById(id);
 
+    // 디버깅: 조회 결과 로그
+    console.log("[ProductDetail] 조회 결과:", product ? "상품 찾음" : "상품 없음");
+    if (product) {
+      console.log("[ProductDetail] 상품명:", product.name);
+      console.log("[ProductDetail] 상품 활성화 상태:", product.is_active);
+    }
+
     // 상품이 없으면 404 페이지 표시
     if (!product) {
+      console.error("[ProductDetail] 상품을 찾을 수 없음 - 404 표시");
       notFound();
     }
 

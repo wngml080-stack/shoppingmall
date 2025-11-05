@@ -20,7 +20,8 @@ import { saveUnsplashImageToStorage, updateProductImage } from "@/actions/images
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { LuSave, LuLoader, LuCheckCircle2, LuAlertCircle } from "react-icons/lu";
+import { LuSave, LuLoader } from "react-icons/lu";
+import { CheckCircle2, AlertCircle } from "lucide-react";
 import Image from "next/image";
 
 export default function ImageUploadPage() {
@@ -178,9 +179,9 @@ export default function ImageUploadPage() {
           }`}
         >
           {saveResult.success ? (
-            <LuCheckCircle2 className="w-5 h-5 text-green-600 dark:text-green-400 mt-0.5" />
+            <CheckCircle2 className="w-5 h-5 text-green-600 dark:text-green-400 mt-0.5" />
           ) : (
-            <LuAlertCircle className="w-5 h-5 text-red-600 dark:text-red-400 mt-0.5" />
+            <AlertCircle className="w-5 h-5 text-red-600 dark:text-red-400 mt-0.5" />
           )}
           <p
             className={`flex-1 ${

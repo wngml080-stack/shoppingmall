@@ -9,12 +9,12 @@ import { Suspense } from "react";
 import { redirect } from "next/navigation";
 import { currentUser } from "@clerk/nextjs/server";
 import Link from "next/link";
-import { CheckCircle2, ShoppingBag, ArrowRight } from "lucide-react";
+import { CheckCircle2, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getOrderById } from "@/actions/orders";
 
 interface SuccessPageProps {
-  searchParams: Promise<{ orderId?: string }> | { orderId?: string };
+  searchParams: Promise<{ orderId?: string }>;
 }
 
 export default async function SuccessPage({ searchParams }: SuccessPageProps) {
@@ -24,8 +24,8 @@ export default async function SuccessPage({ searchParams }: SuccessPageProps) {
     redirect("/sign-in");
   }
 
-  // Next.js 15에서는 searchParams가 Promise일 수 있음
-  const params = searchParams instanceof Promise ? await searchParams : searchParams;
+  // Next.js 15에서는 searchParams가 Promise
+  const params = await searchParams;
   const orderId = params.orderId;
 
   if (!orderId) {

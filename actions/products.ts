@@ -922,6 +922,10 @@ export async function getProductsCountByCategory(category: string): Promise<numb
  */
 export async function getProductById(id: string): Promise<Product | null> {
   try {
+    // 디버깅: 함수 호출 로그
+    console.log("[getProductById] 상품 ID로 조회 시작:", id);
+    console.log("[getProductById] 상품 ID 타입:", typeof id);
+
     // 환경 변수 확인
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -931,11 +935,30 @@ export async function getProductById(id: string): Promise<Product | null> {
       if (!supabaseUrl) missingVars.push("NEXT_PUBLIC_SUPABASE_URL");
       if (!serviceRoleKey) missingVars.push("SUPABASE_SERVICE_ROLE_KEY");
       
-      console.error(`환경 변수 누락: ${missingVars.join(", ")}`);
+      console.error(`[getProductById] 환경 변수 누락: ${missingVars.join(", ")}`);
       throw new Error(`환경 변수가 설정되지 않았습니다: ${missingVars.join(", ")}`);
     }
 
+    console.log("[getProductById] Supabase URL:", supabaseUrl ? "설정됨" : "없음");
+    console.log("[getProductById] Service Role Key:", serviceRoleKey ? "설정됨" : "없음");
+
     const supabase = getServiceRoleClient();
+
+    // 디버깅: is_active 필터 없이 먼저 조회해보기
+    const { data: allData, error: allError } = await supabase
+      .from("products")
+      .select("*")
+      .eq("id", id)
+      .single();
+
+    console.log("[getProductById] is_active 필터 없이 조회 결과:", allData ? "데이터 있음" : "데이터 없음");
+    if (allData) {
+      console.log("[getProductById] 조회된 상품 is_active:", allData.is_active);
+    }
+    if (allError) {
+      console.log("[getProductById] 조회 에러 코드:", allError.code);
+      console.log("[getProductById] 조회 에러 메시지:", allError.message);
+    }
 
     const { data, error } = await supabase
       .from("products")
@@ -947,6 +970,7 @@ export async function getProductById(id: string): Promise<Product | null> {
     if (error) {
       // 404 에러는 null 반환 (상품이 없음)
       if (error.code === "PGRST116") {
+        console.log("[getProductById] 상품을 찾을 수 없음 (PGRST116)");
         return null;
       }
 
@@ -958,10 +982,11 @@ export async function getProductById(id: string): Promise<Product | null> {
         code: error.code || "코드 없음",
       };
       
-      console.error("상품 상세 조회 오류:", JSON.stringify(errorInfo, null, 2));
+      console.error("[getProductById] 상품 상세 조회 오류:", JSON.stringify(errorInfo, null, 2));
       throw new Error(`상품 조회 실패: ${error.message || errorInfo.message}`);
     }
 
+    console.log("[getProductById] 상품 조회 성공:", data ? "데이터 반환" : "null 반환");
     return (data as Product) || null;
   } catch (error) {
     // 에러 객체를 더 명확하게 로깅
