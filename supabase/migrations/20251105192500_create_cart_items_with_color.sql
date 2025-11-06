@@ -41,3 +41,4 @@ ALTER TABLE public.cart_items DISABLE ROW LEVEL SECURITY;
 -- 7. 권한 부여
 GRANT ALL ON TABLE public.cart_items TO anon, authenticated, service_role;
 
+
