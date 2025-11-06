@@ -4,6 +4,7 @@ import { koKR } from "@clerk/localizations";
 import { Geist, Geist_Mono } from "next/font/google";
 
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import { SyncUserProvider } from "@/components/providers/sync-user-provider";
 import "./globals.css";
 
@@ -39,11 +40,12 @@ export default function RootLayout({
     <ClerkProvider publishableKey={publishableKey} localization={koKR}>
       <html lang="ko">
         <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+          className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen`}
         >
           <SyncUserProvider>
             <Navbar />
-            {children}
+            <main className="flex-1">{children}</main>
+            <Footer />
           </SyncUserProvider>
         </body>
       </html>
